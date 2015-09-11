@@ -129,7 +129,39 @@ lm_logsilv <- lm(Log_silv~time(Log_silv))
 # c)
 minBoxCox <- BoxCox.ar(silver[,2])
 
+#par(mfrow=c(2,1))
+#plot((silver[, 2]^-0.2 - 1) / -0.2)
+#plot(Log_silv)
+#par(mfrow=c(1,1))
+
+box_silver <- (silver[, 2]^-0.2 - 1) / -0.2
 
 
+box_silver_diff <- diff(box_silver, differences = 2)
+log_silver_diff <- diff(Log_silv, differences = 2)
+
+lm_box <- lm(box_silver_diff~time(box_silver_diff))
+lm_log <- lm(log_silver_diff~time(log_silver_diff))
 
 
+#plot(rstudent(lm_box), type="l")
+#plot(rstudent(lm_log), type="l")
+#acf(rstudent(lm_box))
+#acf(rstudent(lm_log))
+
+# d)
+data(bluebird)
+#plot(bluebird[, 2])
+
+
+#plot(log(bluebird[, 2]))
+lambd <- c(-2:12)
+#blueBox <- BoxCox.ar(bluebird[, 2], lambda=lambd)
+
+
+bluebird_box <- (bluebird[, 2]^3 - 1) / 3
+#plot(diff(bluebird_box,differences = 1))
+lm_blue_box <- lm(bluebird_box~time(bluebird_box))
+
+#acf(rstudent(lm_blue_box))
+#plot(rstudent(lm_blue_box), type="l")
