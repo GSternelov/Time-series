@@ -75,6 +75,7 @@ d_b_model2_resid <- rstudent(d_b_model2)
 
 
 # Uppgift 2
+# c)
 AR2sim <- function(T, phi1, phi2){
   y <- rnorm(T)
   j <- y
@@ -92,18 +93,18 @@ AR2sim <- function(T, phi1, phi2){
 # AR2sim(T=100, 0, -0.64)
 
 #d)
-#AR2sim(10000, 0.8, 0.2) # Exempel p? en outside stationary region
+# AR2sim(10000, 0.8, 0.2) # Exempel p? en outside stationary region
 
 
 # e)
 ma1 <- arima.sim(list(ma = 1), 1000)
-acf(ma1)
+# acf(ma1)
 
 ma2 <- arima.sim(list(ma = c(1, -0.5)), 1000)
-acf(ma2)
+# acf(ma2)
 
 ma1.1 <- arima.sim(list(ma = 1, ar = -0.5), 1000)
-acf(ma1.1)
+# acf(ma1.1)
 
 # 3)
 
