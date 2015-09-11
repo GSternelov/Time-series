@@ -2,6 +2,16 @@ rhine <- read.csv2("/Users/Kevin/Documents/Skola/732A34 - Time series/Lab 1/Rhin
 library(TSA)
 rhine <- ts(rhine, freq = 12, start = 1)
 
+# Plottar med lag 1
+# plot(x = zlag(rhine[,4],1), y = rhine[, 4], xlab = "Time", ylab = "Nitrogen", main = "Monthly concentrations of total nitrogen in the Rhine river with lag = 1")
+
+# Plottar med lag 6
+# plot(x = zlag(rhine[,4],6), y = rhine[, 4], xlab = "Time", ylab = "Nitrogen", main = "Monthly concentrations of total nitrogen in the Rhine river with lag = 6")
+
+# Plottar med lag 12
+# plot(x = zlag(rhine[,4],12), y = rhine[, 4], xlab = "Time", ylab = "Nitrogen", main = "Monthly concentrations of total nitrogen in the Rhine river with lag = 12")
+
+
 # 1. a)
 # Plot data with months marked on the time series.
 # plot(time(rhine), rhine[, 4], type = "l",ylab = "Nitrogen", main = "Monthly concentrations of total nitrogen in the Rhine river")
@@ -106,63 +116,65 @@ ma2 <- arima.sim(list(ma = c(1, -0.5)), 1000)
 ma1.1 <- arima.sim(list(ma = 1, ar = -0.5), 1000)
 # acf(ma1.1)
 
+# Test with diffrent values for T and phis.
+# AR2sim(T=100, 0.2, 0.8) # Not stationary
+# AR2sim(T=100, 0.2, 0.3) # Stationary
+
+# AR2sim(T=1000, 0.2, 0.8) # Not stationary
+# AR2sim(T=1000, 0.2, 0.3) # Stationary
+
+
+# AR2sim(T=10, 0.2, 0.8) # Not stationary
+# AR2sim(T=10, 0.2, 0.3) # Stationary
+
+
 # 3)
-silver <- read.csv("C:/Users/Gustav/Desktop/time series analysis/silver.csv", sep=';', stringsAsFactors=F, header=T)
+silver <- read.csv2("/Users/Kevin/Documents/Skola/732A34 - Time series/Lab 1/silver.csv")
 
 silver <- ts(silver, freq = 52, start = 1)
 
-# a
-#plot(y = silver[, 2], x = time(silver), type = "l")
-#points(y= silver[, 2], x = time(silver), pch = as.vector(season(silver)))
-
+# a)
+# plot(y = silver[, 2], x = time(silver), type = "l")
 
 # b
 Log_silv <- log(silver[, 2])
-#plot(y = Log_silv, x = time(Log_silv), type = "l")
-#points(y= Log_silv, x = time(Log_silv), pch = as.vector(season(silver)))
-
+# plot(y = Log_silv, x = time(Log_silv), type = "l")
 
 lm_logsilv <- lm(Log_silv~time(Log_silv))
-#acf(rstudent(lm_logsilv))
-#qqnorm(rstudent(lm_logsilv)); qqline(rstudent(lm_logsilv))
-
+# acf(rstudent(lm_logsilv))
+# qqnorm(rstudent(lm_logsilv)); qqline(rstudent(lm_logsilv))
 
 # c)
-minBoxCox <- BoxCox.ar(silver[,2])
+# BoxCox.ar(silver[,2])
 
-#par(mfrow=c(2,1))
-#plot((silver[, 2]^-0.2 - 1) / -0.2)
-#plot(Log_silv)
-#par(mfrow=c(1,1))
+# par(mfrow=c(2,1))
+# plot((silver[, 2]^-0.2 - 1) / -0.2)
+# plot(Log_silv)
+# par(mfrow=c(1,1))
 
 box_silver <- (silver[, 2]^-0.2 - 1) / -0.2
 
 
 box_silver_diff <- diff(box_silver, differences = 2)
 log_silver_diff <- diff(Log_silv, differences = 2)
+# plot(diff(box_silver, differences = 2))
 
 lm_box <- lm(box_silver_diff~time(box_silver_diff))
 lm_log <- lm(log_silver_diff~time(log_silver_diff))
-
-
-#plot(rstudent(lm_box), type="l")
-#plot(rstudent(lm_log), type="l")
-#acf(rstudent(lm_box))
-#acf(rstudent(lm_log))
+par(mfrow = c(2,1))
+# plot(rstudent(lm_box), type="l")
+# acf(rstudent(lm_box))
+par(mfrow = c(1,1))
 
 # d)
 data(bluebird)
-#plot(bluebird[, 2])
+# plot(bluebird[, 2])
 
-
-#plot(log(bluebird[, 2]))
 lambd <- c(-2:12)
-#blueBox <- BoxCox.ar(bluebird[, 2], lambda=lambd)
-
 
 bluebird_box <- (bluebird[, 2]^3 - 1) / 3
-#plot(diff(bluebird_box,differences = 1))
+# plot(diff(bluebird_box,differences = 1))
 lm_blue_box <- lm(bluebird_box~time(bluebird_box))
 
-#acf(rstudent(lm_blue_box))
-#plot(rstudent(lm_blue_box), type="l")
+# acf(rstudent(lm_blue_box))
+# plot(rstudent(lm_blue_box), type="l")
