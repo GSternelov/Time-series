@@ -106,5 +106,30 @@ ma1.1 <- arima.sim(list(ma = 1, ar = -0.5), 1000)
 acf(ma1.1)
 
 # 3)
+silver <- read.csv("C:/Users/Gustav/Desktop/time series analysis/silver.csv", sep=';', stringsAsFactors=F, header=T)
+
+silver <- ts(silver, freq = 52, start = 1)
+
+# a
+#plot(y = silver[, 2], x = time(silver), type = "l")
+#points(y= silver[, 2], x = time(silver), pch = as.vector(season(silver)))
+
+
+# b
+Log_silv <- log(silver[, 2])
+#plot(y = Log_silv, x = time(Log_silv), type = "l")
+#points(y= Log_silv, x = time(Log_silv), pch = as.vector(season(silver)))
+
+
+lm_logsilv <- lm(Log_silv~time(Log_silv))
+#acf(rstudent(lm_logsilv))
+#qqnorm(rstudent(lm_logsilv)); qqline(rstudent(lm_logsilv))
+
+
+# c)
+minBoxCox <- BoxCox.ar(silver[,2])
+
+
+
 
 
