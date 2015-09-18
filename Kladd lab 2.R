@@ -1,3 +1,5 @@
+Sc <- sum(y-phi*ylag1-phi2*ylag2)^2
+
 
 
 AR2sim <- function(T, phi1, phi2){
@@ -16,9 +18,33 @@ AR2sim <- function(T, phi1, phi2){
 y <- AR2sim(30, 0.3, 0.2)
 
 AR2LS <- function(Y){
+  ylag2 <- zlag(zlag(y))
+  ylag1 <- zlag(y)
   
+  model <- lm(y~ ylag1+ ylag2)
   
+  phi <- model$coef[2:3]
+  
+  ylag1[1] <- 0
+  ylag2[1:2] <- 0
+  
+  stderror <- sqrt(sum(y-phi[1]*ylag1-phi[2]*ylag2)^2/(28-2))
+  stderror
+  return(phi)
+}
+
+y <- AR2sim(30, 0.3, 0.2)
+AR2LS(y)
+
+phi1 <-0
+phi2 <- 0
+for (i in 1:1000){
+  y <- AR2sim(100, 0.3, 0.2)
+  phis <- AR2LS(y)
+  phi1[i] <- phis[1]
+  phi2[i] <- phis[2]
   
 }
 
-
+hist(phi1)
+hist(phi2)
