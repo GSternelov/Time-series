@@ -22,12 +22,15 @@ AR2LS <- function(Y){
 
 # 2)
 
-elec_c <- read.csv("//obelix.helix.ida.liu.se/users-2/gusst214/Documents/Time series/electricity_consumption.csv", sep=";")
+elec_c <- read.csv("C:/Users/Gustav/Documents/Time-series/electricity_consumption.csv", sep=";")
 
 model_elec <- elec_c[1:150,]
 valid_elec <- elec_c[151:300,]
 
-model_elec <- ts(model_elec, freq = 1, start = 1)
+elec_c <- ts(elec_c, freq = 1, start = 1)
+valid_elec <- ts(model_elec, freq = 12, start = 2002.5)
+
+model_elec <- ts(model_elec, freq = 12, start = 1990)
 plot(model_elec[,2])
 points(model_elec[,2], pch=as.vector(season(model_elec[,2])))
 lm(model_elec[,2] ~ time(model_elec[,2]))
@@ -99,9 +102,27 @@ qqnorm(resid_M3); qqline(resid_M3)
 # Har kvar ?rligt samband i residualerna; F?r?ndra modell f?r att f? bort det. 
 
 
-M4 = arima(model_elec[,2],order=c(1,1,0),seasonal=list(order = c(2,1,0)))
-M4
+m4 = arima(model_elec[,2],order=c(1,1,0),seasonal=list(order = c(2,1,0)))
+m4
 
 # Testar en massa men hittar ingen b?ttre modell
+
+
+
+
+# 3
+# b)
+# Tror mest på M1
+par(mfrow=c(1,1))
+pred <- predict(m1, n.ahead=150)
+predts <- ts(pred$pred, start=c(151,1), freq=1)
+predup <- predts + 1.96* pred$se
+predlow <-predts - 1.96* pred$se
+
+plot(elec_c[,2], type="l")
+lines(predts, col="red")
+
+
+
 
 
